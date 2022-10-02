@@ -40,7 +40,7 @@ import { build } from 'esbuild'
 import { denolint } from 'esbuild-plugin-denolint'
 
 await build({
-  entryPoints: ['src/index.js')],
+  entryPoints: ['src/index.js'],
   outdir: 'dist',
   plugins: [
     denolint({
@@ -151,7 +151,7 @@ import { build } from 'esbuild'
 import { denolintAll } from 'esbuild-plugin-denolint'
 
 await build({
-  entryPoints: ['src/index.js')],
+  entryPoints: ['src/index.js'],
   outdir: 'dist',
   plugins: [
     denolintAll()
