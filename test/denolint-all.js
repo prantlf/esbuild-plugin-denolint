@@ -40,3 +40,10 @@ test('warn silently', async () => {
     })] 
   })
 })
+
+test('missing config', async () => {
+  await rejects(build({
+    entryPoints: [join(__dirname, 'samples/pass/ultimate.js')],
+    plugins: [denolintAll({ configFile: 'missing', format: 'compact' })] 
+  }))
+})

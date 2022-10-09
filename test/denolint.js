@@ -40,6 +40,13 @@ test('fail', async () => {
   }))
 })
 
+test('fail compact', async () => {
+  await rejects(build({
+    entryPoints: [join(__dirname, 'samples/fail/ultimate.txt')],
+    plugins: [denolint({ filter: /\.txt$/, format: 'compact', ignoreConfig: true })]
+  }))
+})
+
 test('fail silently', async () => {
   await build({
     entryPoints: [join(__dirname, 'samples/fail/ultimate.txt')],
@@ -67,7 +74,7 @@ test('explicit rules', async () => {
   })
 })
 
-test('formatter of warnings', async () => {
+test('formatter of pretty warnings', async () => {
   let params
   await rejects(build({
     entryPoints: [join(__dirname, 'samples/warn/ultimate.js')],
@@ -80,11 +87,31 @@ test('formatter of warnings', async () => {
     })] 
   }))
   strictEqual(params.warnings.length, 2)
+  ok(/\n.+\n/g.test(params.warnings[0]))
   ok(params.path.endsWith('test/samples/warn/ultimate.js'))
   strictEqual(typeof params.source, 'string')
 })
 
-test('formatter of errors', async () => {
+test('formatter of compact warnings', async () => {
+  let params
+  await rejects(build({
+    entryPoints: [join(__dirname, 'samples/warn/ultimate.js')],
+    plugins: [denolint({
+      ignoreConfig: true,
+      format: 'compact',
+      formatter: (warnings, path, source) => {
+        params = { warnings, path, source }
+        return warnings
+      }
+    })] 
+  }))
+  strictEqual(params.warnings.length, 2)
+  ok(!/\n.+\n/g.test(params.warnings[0]))
+  ok(params.path.endsWith('test/samples/warn/ultimate.js'))
+  strictEqual(typeof params.source, 'string')
+})
+
+test('formatter of pretty errors', async () => {
   let params
   await rejects(build({
     entryPoints: [join(__dirname, 'samples/fail/ultimate.txt')],
@@ -97,6 +124,26 @@ test('formatter of errors', async () => {
     })]
   }))
   strictEqual(params.errors.length, 1)
+  ok(!/\n.+\n/g.test(params.errors[0]))
+  ok(params.path.endsWith('test/samples/fail/ultimate.txt'))
+  strictEqual(typeof params.source, 'string')
+})
+
+test('formatter of compact errors', async () => {
+  let params
+  await rejects(build({
+    entryPoints: [join(__dirname, 'samples/fail/ultimate.txt')],
+    plugins: [denolint({
+      filter: /\.txt$/, ignoreConfig: true,
+      format: 'compact',
+      formatter: (errors, path, source) => {
+        params = { errors, path, source }
+        return errors
+      }
+    })]
+  }))
+  strictEqual(params.errors.length, 1)
+  ok(!/\n.+\n/g.test(params.errors[0]))
   ok(params.path.endsWith('test/samples/fail/ultimate.txt'))
   strictEqual(typeof params.source, 'string')
 })
