@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/prantlf/esbuild-plugin-denolint/compare/v1.1.0...v1.1.1) (2023-04-22)
+
+
+### Bug Fixes
+
+* Upgrade dependencies ([129432b](https://github.com/prantlf/esbuild-plugin-denolint/commit/129432bd5af87b90766e432fc76b46a1b31716da))
+
 # [1.1.0](https://github.com/prantlf/esbuild-plugin-denolint/compare/v1.0.0...v1.1.0) (2022-10-09)
 
 
